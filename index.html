@@ -3,16 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <title>New Tab</title>
-    <link rel="icon" href="zen-browser-dark.svg" type="image/svg+xml">
     <style>
-        /* Định nghĩa các biến màu sắc và giao diện */
         :root {
-            --glass-bg: rgba(255, 255, 255, 0.05); /* Màu nền kính trong suốt */
-            --glass-border: rgba(255, 255, 255, 0.1); /* Màu viền kính */
-            --input-bg: rgba(255, 255, 255, 0.1); /* Màu nền ô tìm kiếm */
-            --text-color: rgba(255, 255, 255, 0.9); /* Màu chữ chính */
-            --text-sub: rgba(255, 255, 255, 0.6); /* Màu chữ phụ/mờ */
-            --font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            --glass-bg: rgba(255, 255, 255, 0.05);
+            --glass-border: rgba(255, 255, 255, 0.1);
+            --text-color: #ffffff;
         }
 
         body {
@@ -21,267 +16,107 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            
-            /* --- SỬA CHÍNH: NỀN VŨ TRỤ --- */
-            /* Tạo hiệu ứng mây vũ trụ sâu thẳm bằng radial-gradient nhiều lớp */
-            background: 
-                /* Lớp sáng ngọc trai trung tâm */
-                radial-gradient(circle at center, rgba(160, 210, 230, 0.2) 0%, rgba(160, 210, 230, 0) 40%),
-                /* Lớp mây tím amethyst ở phía trái */
-                radial-gradient(circle at 20% 60%, rgba(120, 50, 180, 0.3) 0%, rgba(120, 50, 180, 0) 50%),
-                /* Lớp mây xanh indigo ở phía phải */
-                radial-gradient(circle at 80% 40%, rgba(40, 110, 190, 0.3) 0%, rgba(40, 110, 190, 0) 50%),
-                /* Nền tối sâu thẳm */
-                #050810;
-            background-size: cover;
-            
-            font-family: var(--font-family);
+            background: radial-gradient(circle at center, rgba(120, 50, 180, 0.3), #050810);
+            font-family: 'Inter', system-ui, sans-serif;
             color: var(--text-color);
             overflow: hidden;
-            position: relative;
         }
 
-        /* Thêm hiệu ứng chòm sao mờ bằng giả phần tử */
-        body::before {
-            content: '';
-            position: absolute;
-            top: 0; left: 0; right: 0; bottom: 0;
-            /* Tạo một vài điểm constellation mờ mờ */
-            background-image: 
-                radial-gradient(white, rgba(255,255,255,.2) 1px, transparent 2px),
-                radial-gradient(white, rgba(255,255,255,.1) 1px, transparent 1px);
-            background-size: 200px 200px, 150px 150px;
-            background-position: 0 0, 40px 60px;
-            opacity: 0.1; /* Rất mờ */
-            z-index: 0;
-        }
-
+        /* Khung chính */
         .glass-container {
-            z-index: 1; /* Nằm trên lớp constellation */
-            padding: 50px 60px; /* Tăng padding để panel rộng hơn y hình */
-            border-radius: 28px; /* Bo góc mềm mại hơn */
+            padding: 40px;
+            border-radius: 24px;
             background: var(--glass-bg);
-            /* Hiệu ứng kính mờ (Glassmorphism) */
-            backdrop-filter: blur(25px); /* Tăng độ mờ */
-            -webkit-backdrop-filter: blur(25px);
+            backdrop-filter: blur(20px);
             border: 1px solid var(--glass-border);
-            /* Đổ bóng sâu hơn cho cảm giác "phù du" */
-            box-shadow: 0 15px 50px rgba(0,0,0,0.5);
             width: 100%;
-            max-width: 600px; /* Panel rộng hơn một chút */
+            max-width: 500px;
             text-align: center;
-            animation: fadeIn 1s ease-out; /* Animation mượt hơn */
-            position: relative;
-            
-            /* Tắt hiệu ứng co giãn box mặc định */
-            box-sizing: border-box;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(15px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        h1 { 
-            margin-top: 0; 
-            font-weight: 400; /* Font dày hơn một chút */
-            font-size: 2.8rem; /* Chữ greeting lớn hơn */
-            margin-bottom: 25px;
-            color: white;
-            letter-spacing: -1px; /* Khoảng cách chữ khít hơn */
-        }
-
-        #search-form {
-            margin-bottom: 30px;
         }
 
         input {
             width: 100%;
-            padding: 18px 25px; /* Padding ô tìm kiếm */
-            border-radius: 14px; /* Bo góc ô input */
+            padding: 15px;
+            border-radius: 12px;
             border: 1px solid var(--glass-border);
-            background: var(--input-bg); /* Nền input tối hơn, mờ */
+            background: rgba(255,255,255,0.1);
             color: white;
             font-size: 1.1rem;
             outline: none;
             box-sizing: border-box;
-            transition: all 0.3s ease;
         }
 
-        input:focus { 
-            background: rgba(255,255,255,0.15); 
-            border-color: rgba(255,255,255,0.4); 
-            box-shadow: 0 0 15px rgba(255,255,255,0.1);
-        }
-
-        /* --- PHẦN LỊCH SỬ --- */
-        #history-section {
-            text-align: left; /* Căn trái toàn bộ phần lịch sử */
-            margin-top: 20px;
-            font-size: 1rem;
-        }
-
-        #history-title {
-            color: var(--text-sub);
-            margin-bottom: 15px;
-            display: block;
-            font-weight: 500;
-        }
-
-        #history-suggestions {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-        }
-
-        #history-suggestions li {
-            margin-bottom: 12px;
+        /* Quick Links */
+        .quick-links {
             display: flex;
-            align-items: center;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 25px;
         }
-
-        /* Biểu tượng "search history" SVG */
-        .history-icon {
-            width: 18px;
-            height: 18px;
-            fill: var(--text-sub);
-            margin-right: 15px;
+        .quick-links a {
+            padding: 10px;
+            background: var(--glass-bg);
+            border-radius: 10px;
+            transition: 0.3s;
         }
+        .quick-links a:hover { background: rgba(255,255,255,0.2); }
 
-        .history-item-text {
-            color: var(--text-color);
-            text-decoration: none;
-            cursor: pointer;
-            transition: color 0.2s ease;
-        }
-
-        .history-item-text:hover {
-            color: white;
-        }
-
-        /* --- ĐỒNG HỒ TẠI VỊ TRÍ MỚI --- */
-        #clock {
+        /* Khung ngoài */
+        .info-box {
             position: absolute;
-            bottom: 30px; /* Góc dưới */
-            right: 40px; /* Phải */
-            font-size: 1.6rem; /* Chữ đồng hồ lớn hơn */
-            color: white;
-            font-weight: 300; /* Font mỏng */
-            letter-spacing: 1px;
-            opacity: 0.9;
+            padding: 20px;
+            background: var(--glass-bg);
+            backdrop-filter: blur(10px);
+            border-radius: 16px;
+            border: 1px solid var(--glass-border);
+            font-size: 1.2rem;
         }
+
+        #clock { top: 30px; right: 30px; font-size: 2rem; font-weight: bold; }
+        #weather { top: 30px; left: 30px; }
     </style>
 </head>
 <body>
 
+    <div id="clock" class="info-box">00:00</div>
+    <div id="weather" class="info-box">Đang tải...</div>
+
     <div class="glass-container">
-        <h1 id="greeting">...</h1>
-        
+        <h1 id="greeting" style="font-weight: 300; margin-bottom: 20px;">...</h1>
         <form id="search-form">
-            <input type="text" name="q" id="search-input" placeholder="..." autofocus>
+            <input type="text" id="search-input" placeholder="Tìm kiếm hoặc nhập URL..." autofocus>
         </form>
-        
-        <div id="history-section">
-            <span id="history-title">Tìm kiếm history</span>
-            <ul id="history-suggestions">
-                </ul>
+
+        <div class="quick-links">
+            <a href="https://github.com" title="GitHub">💻</a>
+            <a href="https://youtube.com" title="YouTube">📺</a>
+            <a href="https://mail.google.com" title="Mail">✉️</a>
+            <a href="https://chatgpt.com" title="ChatGPT">🤖</a>
         </div>
-        
-        <div id="clock">00:00</div>
     </div>
 
     <script>
-        // Dictionary dịch thuật
-        const i18n = {
-            'en': { greeting: ["Good morning.", "Good afternoon.", "Good evening."], placeholder: "Search or enter URL...", historyTitle: "Search history" },
-            'es': { greeting: ["Buenos días.", "Buenas tardes.", "Buenas noches."], placeholder: "Buscar o escribir URL...", historyTitle: "Historial de búsqueda" },
-            'vi': { greeting: ["Chào buổi sáng.", "Chào buổi chiều.", "Chào buổi tối."], placeholder: "Tìm kiếm hoặc nhập URL...", historyTitle: "Tìm kiếm history" },
-            // ... (bạn có thể giữ lại các ngôn ngữ khác nếu muốn, nhưng ở đây tối giản)
-        };
-
-        // Detect ngôn ngữ
-        const lang = navigator.language.split('-')[0];
-        const t = i18n[lang] || i18n['vi']; // Mặc định là tiếng Việt nếu không có
-
-        // SVG icon lịch sử
-        const historyIconSVG = `<svg class="history-icon" viewBox="0 0 24 24"><path d="M13 3a9 9 0 0 0-9 9H1l3.89 3.89.07.14L9 12H6a7 7 0 1 1 7 7 7 7 0 0 1-7-7H4a9 9 0 1 0 9-9Z"/></svg>`;
-
-        // 1. Cài đặt greeting và placeholder
+        // Greeting
         const hour = new Date().getHours();
-        const greetingIndex = hour < 12 ? 0 : hour < 19 ? 1 : 2;
-        document.getElementById('greeting').innerText = t.greeting[greetingIndex];
-        document.getElementById('search-input').placeholder = t.placeholder;
-        // document.getElementById('history-title').innerText = t.historyTitle; // Sửa title lịch sử nếu cần
+        document.getElementById('greeting').innerText = hour < 12 ? "Chào buổi sáng." : hour < 19 ? "Chào buổi chiều." : "Chào buổi tối.";
 
-        // 2. Reloj real-time
+        // Clock
         function updateClock() {
-            const now = new Date();
-            document.getElementById('clock').innerText = now.toLocaleTimeString('en-GB', { 
-                hour: '2-digit', 
-                minute: '2-digit', 
-                hour12: false 
-            });
+            document.getElementById('clock').innerText = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false });
         }
         setInterval(updateClock, 1000);
         updateClock();
 
-        // 3. Lịch sử tìm kiếm (SỬA ĐỂ HIỂN THỊ Y HÌNH)
+        // Weather (Mô phỏng - bạn cần API key từ OpenWeather để lấy data thật)
+        document.getElementById('weather').innerText = "28°C - Hồ Chí Minh";
+
+        // Search
         const form = document.getElementById('search-form');
-        const input = document.getElementById('search-input');
-        const historySuggestions = document.getElementById('history-suggestions');
-
-        const getHistory = () => JSON.parse(localStorage.getItem('zen_history') || '[]');
-        
-        // Hàm cập nhật danh sách hiển thị lịch sử
-        function updateHistoryList() {
-            const history = getHistory().slice(0, 3); // Lấy 3 mục gần nhất
-            
-            // Xóa danh sách cũ
-            historySuggestions.innerHTML = '';
-            
-            // Tạo các mục lịch sử mới với icon
-            history.forEach(query => {
-                const li = document.createElement('li');
-                li.innerHTML = `
-                    ${historyIconSVG}
-                    <a class="history-item-text">${query}</a>
-                `;
-                // Cho phép nhấn vào mục lịch sử để tìm lại
-                li.querySelector('.history-item-text').addEventListener('click', () => {
-                    input.value = query;
-                    form.requestSubmit(); // Submit form
-                });
-                historySuggestions.appendChild(li);
-            });
-        }
-        updateHistoryList();
-
-        // Xử lý submit form
         form.addEventListener('submit', (e) => {
             e.preventDefault();
-            let query = input.value.trim();
-            if (!query) return;
-
-            // Lưu vào lịch sử (tối đa 10 mục)
-            let history = getHistory();
-            if (!history.includes(query)) {
-                history.unshift(query);
-                localStorage.setItem('zen_history', JSON.stringify(history.slice(0, 10)));
-            }
-
-            // Xử lý điều hướng: URL hoặc Google search
-            if ((query.includes('.') && !query.includes(' ')) || query.startsWith('http')) {
-                window.location.href = query.startsWith('http') ? query : 'https://' + query;
-            } else {
-                window.location.href = `https://www.google.com/search?q=${encodeURIComponent(query)}`;
-            }
+            const q = document.getElementById('search-input').value;
+            window.location.href = q.includes('.') ? (q.startsWith('http') ? q : 'https://' + q) : `https://www.google.com/search?q=${q}`;
         });
-
-        // Giữ ô nhập luôn được focus
-        const focusInput = document.getElementById('search-input');
-        window.addEventListener('focus', () => focusInput.focus());
-        document.addEventListener('click', () => focusInput.focus());
-        document.addEventListener('keydown', () => focusInput.focus());
     </script>
 </body>
 </html>
