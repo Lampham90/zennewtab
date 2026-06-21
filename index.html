@@ -4,57 +4,55 @@
     <meta charset="UTF-8">
     <title>New Tab</title>
     <style>
-        :root {
-            --text-color: rgba(255, 255, 255, 0.9);
-            --text-sub: rgba(255, 255, 255, 0.5);
-        }
-
         body {
             margin: 0;
             height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
-            /* ĐỔI THÀNH TRANSPARENT ĐỂ XUYÊN THẤU */
-            background: transparent; 
+            /* Màu nền tối nhẹ để kính nổi lên */
+            background: #050810;
             font-family: 'Inter', system-ui, sans-serif;
-            color: var(--text-color);
+            color: white;
             overflow: hidden;
         }
 
         .glass-container {
             padding: 50px 60px;
-            border-radius: 28px;
-            /* Tăng nhẹ opacity để nhìn thấy tấm kính */
-            background: rgba(255, 255, 255, 0.05); 
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+            border-radius: 30px;
+            
+            /* CẤU TRÚC KÍNH MỜ NHÁM */
+            /* 1. Màu nền kính hơi đục (rgba với độ alpha ~0.15) */
+            background: rgba(255, 255, 255, 0.1); 
+            
+            /* 2. Hiệu ứng làm mờ và nhám */
+            backdrop-filter: blur(20px) saturate(180%);
+            -webkit-backdrop-filter: blur(20px) saturate(180%);
+            
+            /* 3. Thêm một lớp noise (nhiễu) để tạo cảm giác nhám thật */
+            background-image: radial-gradient(circle at 50% 50%, rgba(255,255,255,0.05) 0%, transparent 70%);
+            
+            /* 4. Viền kính phát sáng nhẹ */
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.8);
+            
             width: 100%;
             max-width: 600px;
             text-align: center;
-            position: relative;
-            box-sizing: border-box;
         }
 
-        h1 { margin-top: 0; font-weight: 400; font-size: 2.8rem; margin-bottom: 25px; color: white; }
-
         input { 
-            width: 100%; padding: 18px 25px; border-radius: 14px; 
+            width: 100%; padding: 18px 25px; border-radius: 15px; 
             border: 1px solid rgba(255, 255, 255, 0.1); 
             background: rgba(255, 255, 255, 0.05); 
-            color: white; font-size: 1.1rem; outline: none; box-sizing: border-box; margin-bottom: 30px; 
+            color: white; font-size: 1.1rem; outline: none;
+            box-shadow: inset 0 0 10px rgba(0,0,0,0.2);
         }
 
         #info-footer {
-            position: absolute;
-            bottom: 30px;
-            right: 40px;
-            text-align: right;
-            font-size: 1rem;
-            color: var(--text-sub);
-            font-weight: 300;
+            margin-top: 30px;
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 0.9rem;
         }
     </style>
 </head>
@@ -62,11 +60,10 @@
     <div class="glass-container">
         <h1 id="greeting">Chào bạn</h1>
         <form id="search-form">
-            <input type="text" name="q" id="search-input" placeholder="Tìm kiếm..." autofocus>
+            <input type="text" id="search-input" placeholder="Tìm kiếm..." autofocus>
         </form>
         <div id="info-footer">
-            <span id="date">--/--</span> | <span id="weather">TP.HCM: 29°C</span>
-            <span id="clock">00:00</span>
+            <span id="date">--/--</span> | <span id="weather">TP.HCM: 29°C</span> | <span id="clock">00:00</span>
         </div>
     </div>
 
