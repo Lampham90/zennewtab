@@ -6,7 +6,7 @@
     <style>
         :root {
             --text-color: rgba(255, 255, 255, 0.9);
-            --text-sub: rgba(255, 255, 255, 0.6);
+            --text-sub: rgba(255, 255, 255, 0.5);
         }
 
         body {
@@ -15,7 +15,7 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            /* Thay vì nền đen, ta để transparent để nó nhận bất kỳ hình nền nào của trình duyệt */
+            /* ĐỔI THÀNH TRANSPARENT ĐỂ XUYÊN THẤU */
             background: transparent; 
             font-family: 'Inter', system-ui, sans-serif;
             color: var(--text-color);
@@ -24,43 +24,28 @@
 
         .glass-container {
             padding: 50px 60px;
-            border-radius: 30px;
-            
-            /* HIỆU ỨNG FROSTED GLASS CHUẨN: */
-            /* Màu nền hơi trắng nhạt với độ trong suốt 10% tạo cảm giác "lì" của kính mờ */
-            background: rgba(255, 255, 255, 0.1); 
-            
-            /* Độ mờ (blur) này mới là cái làm nên sự "Frosted" */
-            backdrop-filter: blur(20px); 
+            border-radius: 28px;
+            /* Tăng nhẹ opacity để nhìn thấy tấm kính */
+            background: rgba(255, 255, 255, 0.05); 
+            backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
-            
-            /* Viền trắng mỏng tạo cảm giác sắc cạnh của tấm kính */
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            
-            /* Đổ bóng nhẹ để tách biệt tấm kính khỏi nền */
-            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
-            
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
             width: 100%;
             max-width: 600px;
             text-align: center;
+            position: relative;
             box-sizing: border-box;
         }
 
-        /* Các phần còn lại giữ nguyên để không làm vỡ layout */
         h1 { margin-top: 0; font-weight: 400; font-size: 2.8rem; margin-bottom: 25px; color: white; }
 
         input { 
             width: 100%; padding: 18px 25px; border-radius: 14px; 
-            border: 1px solid rgba(255, 255, 255, 0.15); 
-            background: rgba(0, 0, 0, 0.2); /* Input hơi tối để nổi bật chữ */
+            border: 1px solid rgba(255, 255, 255, 0.1); 
+            background: rgba(255, 255, 255, 0.05); 
             color: white; font-size: 1.1rem; outline: none; box-sizing: border-box; margin-bottom: 30px; 
         }
-
-        #history-section { text-align: left; margin-top: 20px; font-size: 1rem; }
-        .history-icon { width: 18px; height: 18px; fill: var(--text-sub); margin-right: 15px; }
-        #history-suggestions { list-style: none; padding: 0; margin: 0; }
-        #history-suggestions li { margin-bottom: 12px; display: flex; align-items: center; }
-        .history-item-text { color: var(--text-color); text-decoration: none; cursor: pointer; }
 
         #info-footer {
             position: absolute;
@@ -74,15 +59,11 @@
     </style>
 </head>
 <body>
-
     <div class="glass-container">
-        <h1 id="greeting">...</h1>
+        <h1 id="greeting">Chào bạn</h1>
         <form id="search-form">
-            <input type="text" name="q" id="search-input" placeholder="..." autofocus>
+            <input type="text" name="q" id="search-input" placeholder="Tìm kiếm..." autofocus>
         </form>
-        <div id="history-section">
-            <ul id="history-suggestions"></ul>
-        </div>
         <div id="info-footer">
             <span id="date">--/--</span> | <span id="weather">TP.HCM: 29°C</span>
             <span id="clock">00:00</span>
@@ -90,46 +71,13 @@
     </div>
 
     <script>
-        const hour = new Date().getHours();
-        document.getElementById('greeting').innerText = hour < 12 ? "Chào buổi sáng." : hour < 19 ? "Chào buổi chiều." : "Chào buổi tối.";
-
-        function updateDateTime() {
+        function update() {
             const now = new Date();
             document.getElementById('clock').innerText = now.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' });
             document.getElementById('date').innerText = now.toLocaleDateString('vi-VN', { day: 'numeric', month: 'short' });
         }
-        setInterval(updateDateTime, 1000);
-        updateDateTime();
-
-        const form = document.getElementById('search-form');
-        const input = document.getElementById('search-input');
-        const historySuggestions = document.getElementById('history-suggestions');
-
-        const getHistory = () => JSON.parse(localStorage.getItem('zen_history') || '[]');
-        
-        function updateHistoryList() {
-            const history = getHistory().slice(0, 3);
-            historySuggestions.innerHTML = '';
-            history.forEach(query => {
-                const li = document.createElement('li');
-                li.innerHTML = `<svg class="history-icon" viewBox="0 0 24 24"><path d="M13 3a9 9 0 0 0-9 9H1l3.89 3.89.07.14L9 12H6a7 7 0 1 1 7 7 7 7 0 0 1-7-7H4a9 9 0 1 0 9-9Z"/></svg><a class="history-item-text">${query}</a>`;
-                li.querySelector('.history-item-text').addEventListener('click', () => { input.value = query; form.requestSubmit(); });
-                historySuggestions.appendChild(li);
-            });
-        }
-        updateHistoryList();
-
-        form.addEventListener('submit', (e) => {
-            e.preventDefault();
-            let query = input.value.trim();
-            if (!query) return;
-            let history = getHistory();
-            if (!history.includes(query)) {
-                history.unshift(query);
-                localStorage.setItem('zen_history', JSON.stringify(history.slice(0, 10)));
-            }
-            window.location.href = (query.includes('.') || query.startsWith('http')) ? (query.startsWith('http') ? query : 'https://' + query) : `https://www.google.com/search?q=${encodeURIComponent(query)}`;
-        });
+        setInterval(update, 1000);
+        update();
     </script>
 </body>
 </html>
