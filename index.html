@@ -16,8 +16,8 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            /* Nền trong suốt hoàn toàn, không đè màu */
-            background-color: rgba(5, 8, 16, 0.2); 
+            /* ĐÃ XÓA MÀU TÍM: Nền hoàn toàn trong suốt hoặc tối nhẹ */
+            background: #050810; 
             font-family: var(--font-family);
             color: var(--text-color);
             overflow: hidden;
@@ -26,7 +26,7 @@
         .glass-container {
             padding: 50px 60px;
             border-radius: 28px;
-            /* Độ trong suốt cực cao, chỉ giữ lại hiệu ứng blur */
+            /* Kính trong suốt tối đa */
             background: rgba(255, 255, 255, 0.01); 
             backdrop-filter: blur(40px);
             -webkit-backdrop-filter: blur(40px);
@@ -86,11 +86,9 @@
     </div>
 
     <script>
-        // Greeting
         const hour = new Date().getHours();
         document.getElementById('greeting').innerText = hour < 12 ? "Chào buổi sáng." : hour < 19 ? "Chào buổi chiều." : "Chào buổi tối.";
 
-        // Thời gian & Ngày
         function updateDateTime() {
             const now = new Date();
             document.getElementById('clock').innerText = now.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' });
@@ -99,7 +97,6 @@
         setInterval(updateDateTime, 1000);
         updateDateTime();
 
-        // Lịch sử & Search
         const form = document.getElementById('search-form');
         const input = document.getElementById('search-input');
         const historySuggestions = document.getElementById('history-suggestions');
