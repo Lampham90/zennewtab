@@ -5,69 +5,87 @@
     <title>New Tab</title>
     <style>
         :root {
-            --glass-bg: rgba(0, 0, 0, 0.3);
-            --glass-border: rgba(255, 255, 255, 0.08);
-            --text-color: rgba(255, 255, 255, 0.9);
-            --text-sub: rgba(255, 255, 255, 0.6);
+            --glass-bg: rgba(255, 255, 255, 0.03);
+            --glass-border: 1px solid rgba(255, 255, 255, 0.1);
+            --shadow-depth: 0 10px 30px rgba(0, 0, 0, 0.5), inset 0 1px 1px rgba(255, 255, 255, 0.1);
         }
-        body { margin: 0; height: 100vh; display: flex; justify-content: center; align-items: center; background: radial-gradient(circle at center, #1e1e2e, #050810); font-family: 'Inter', sans-serif; color: var(--text-color); overflow: hidden; }
-        .glass-container { padding: 40px; border-radius: 24px; background: var(--glass-bg); backdrop-filter: blur(20px); border: 1px solid var(--glass-border); width: 100%; max-width: 550px; }
-        input { width: 100%; padding: 15px; border-radius: 12px; border: 1px solid var(--glass-border); background: rgba(255,255,255,0.05); color: white; font-size: 1.1rem; box-sizing: border-box; margin-bottom: 20px; }
-        .footer-info { display: flex; justify-content: space-between; align-items: center; margin-top: 20px; font-size: 0.85rem; color: var(--text-sub); }
-        .footer-info span { font-weight: 500; }
+
+        body { 
+            margin: 0; height: 100vh; display: flex; justify-content: center; align-items: center; 
+            background: radial-gradient(circle at 50% 50%, #1e1e2e, #050810);
+            font-family: 'Inter', sans-serif; color: white; overflow: hidden; 
+        }
+
+        /* Khung chính nổi khối */
+        .glass-container { 
+            padding: 40px; border-radius: 30px; 
+            background: var(--glass-bg);
+            backdrop-filter: blur(30px); 
+            border: var(--glass-border);
+            box-shadow: var(--shadow-depth);
+            width: 100%; max-width: 500px;
+        }
+
+        /* Ô tìm kiếm nổi khối sâu */
+        input { 
+            width: 100%; padding: 18px; border-radius: 16px; 
+            border: var(--glass-border);
+            background: rgba(0,0,0,0.2); 
+            color: white; font-size: 1.1rem; box-sizing: border-box;
+            box-shadow: inset 0 4px 10px rgba(0,0,0,0.3);
+            margin-bottom: 25px;
+        }
+
+        /* Thẻ lịch sử nổi khối từng item */
+        .history-item {
+            background: rgba(255,255,255,0.05);
+            padding: 12px 15px; border-radius: 12px;
+            margin-bottom: 10px; border: var(--glass-border);
+            cursor: pointer; transition: 0.3s;
+        }
+        .history-item:hover { background: rgba(255,255,255,0.1); transform: translateY(-2px); }
+
+        /* Footer nổi bật */
+        .footer-info { 
+            display: flex; justify-content: space-between; margin-top: 25px;
+            padding: 15px; background: rgba(0,0,0,0.2); border-radius: 15px;
+            border: var(--glass-border); font-size: 0.9rem; color: rgba(255,255,255,0.6);
+        }
     </style>
 </head>
 <body>
 
     <div class="glass-container">
-        <h1 id="greeting" style="font-weight: 300; font-size: 2rem; margin-top: 0;">...</h1>
+        <h1 id="greeting" style="font-weight: 200; font-size: 1.8rem; margin: 0 0 20px 0;">...</h1>
         <form id="search-form">
             <input type="text" id="search-input" placeholder="Tìm kiếm..." autofocus>
         </form>
 
+        <div id="history-section">
+            <div class="history-item">google.com</div>
+            <div class="history-item">github.com</div>
+        </div>
+
         <div class="footer-info">
-            <span id="date">--/--/----</span>
-            <span id="weather">Đang xác định...</span>
+            <span id="date">--/--</span>
+            <span id="weather">TP.HCM: 29°C</span>
             <span id="clock">00:00</span>
         </div>
     </div>
 
     <script>
-        // 1. Lời chào theo thời gian
-        function updateGreeting() {
-            const hour = new Date().getHours();
-            const greeting = hour < 12 ? "Chào buổi sáng." : hour < 19 ? "Chào buổi chiều." : "Chào buổi tối.";
-            document.getElementById('greeting').innerText = greeting;
-        }
+        // Cập nhật lời chào
+        const h = new Date().getHours();
+        document.getElementById('greeting').innerText = h < 12 ? "Chào buổi sáng." : h < 19 ? "Chào buổi chiều." : "Chào buổi tối.";
 
-        // 2. Cập nhật ngày giờ
-        function updateDateTime() {
+        // Cập nhật giờ
+        function update() {
             const now = new Date();
             document.getElementById('clock').innerText = now.toLocaleTimeString('vi-VN', { hour: '2-digit', minute: '2-digit' });
             document.getElementById('date').innerText = now.toLocaleDateString('vi-VN', { day: 'numeric', month: 'short' });
         }
-
-        // 3. Giả lập thời tiết theo vùng (Tự động)
-        // Lưu ý: Để có thời tiết thật, bạn cần đăng ký API key tại openweathermap.org
-        // Ở đây mình dùng logic xác định vị trí đơn giản
-        function updateWeather() {
-            const weatherEl = document.getElementById('weather');
-            // Logic: Nếu bạn muốn gọi API thật thì dùng fetch() ở đây
-            weatherEl.innerText = "TP.HCM: 29°C"; 
-        }
-
-        // Chạy ngay khi load
-        updateGreeting();
-        updateDateTime();
-        updateWeather();
-        setInterval(updateDateTime, 1000);
-
-        // Search logic
-        document.getElementById('search-form').addEventListener('submit', (e) => {
-            e.preventDefault();
-            const q = document.getElementById('search-input').value;
-            if (q) window.location.href = q.includes('.') ? (q.startsWith('http') ? q : 'https://' + q) : `https://www.google.com/search?q=${q}`;
-        });
+        setInterval(update, 1000);
+        update();
     </script>
 </body>
 </html>
