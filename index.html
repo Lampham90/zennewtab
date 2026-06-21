@@ -6,7 +6,7 @@
     <style>
         :root {
             --text-color: rgba(255, 255, 255, 0.9);
-            --text-sub: rgba(255, 255, 255, 0.5);
+            --text-sub: rgba(255, 255, 255, 0.6);
         }
 
         body {
@@ -15,8 +15,8 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            /* NỀN TRONG SUỐT HOÀN TOÀN - ĐÃ XÓA MỌI GRADIENT TÍM */
-            background-color: #050810; 
+            /* Thay vì nền đen, ta để transparent để nó nhận bất kỳ hình nền nào của trình duyệt */
+            background: transparent; 
             font-family: 'Inter', system-ui, sans-serif;
             color: var(--text-color);
             overflow: hidden;
@@ -24,26 +24,35 @@
 
         .glass-container {
             padding: 50px 60px;
-            border-radius: 28px;
-            /* Kính trong suốt tối đa */
-            background: rgba(255, 255, 255, 0.01); 
-            backdrop-filter: blur(40px);
-            -webkit-backdrop-filter: blur(40px);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+            border-radius: 30px;
+            
+            /* HIỆU ỨNG FROSTED GLASS CHUẨN: */
+            /* Màu nền hơi trắng nhạt với độ trong suốt 10% tạo cảm giác "lì" của kính mờ */
+            background: rgba(255, 255, 255, 0.1); 
+            
+            /* Độ mờ (blur) này mới là cái làm nên sự "Frosted" */
+            backdrop-filter: blur(20px); 
+            -webkit-backdrop-filter: blur(20px);
+            
+            /* Viền trắng mỏng tạo cảm giác sắc cạnh của tấm kính */
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            
+            /* Đổ bóng nhẹ để tách biệt tấm kính khỏi nền */
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+            
             width: 100%;
             max-width: 600px;
             text-align: center;
-            position: relative;
             box-sizing: border-box;
         }
 
+        /* Các phần còn lại giữ nguyên để không làm vỡ layout */
         h1 { margin-top: 0; font-weight: 400; font-size: 2.8rem; margin-bottom: 25px; color: white; }
 
         input { 
             width: 100%; padding: 18px 25px; border-radius: 14px; 
-            border: 1px solid rgba(255, 255, 255, 0.1); 
-            background: rgba(255, 255, 255, 0.02); 
+            border: 1px solid rgba(255, 255, 255, 0.15); 
+            background: rgba(0, 0, 0, 0.2); /* Input hơi tối để nổi bật chữ */
             color: white; font-size: 1.1rem; outline: none; box-sizing: border-box; margin-bottom: 30px; 
         }
 
@@ -62,7 +71,6 @@
             color: var(--text-sub);
             font-weight: 300;
         }
-        #clock { font-size: 1.6rem; color: white; display: block; }
     </style>
 </head>
 <body>
