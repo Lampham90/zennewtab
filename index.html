@@ -1,16 +1,13 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="vi">
 <head>
     <meta charset="UTF-8">
     <title>New Tab</title>
     <link rel="icon" href="zen-browser-dark.svg" type="image/svg+xml">
     <style>
         :root {
-            --glass-bg: rgba(255, 255, 255, 0.05);
-            --glass-border: rgba(255, 255, 255, 0.1);
-            --input-bg: rgba(255, 255, 255, 0.1);
             --text-color: rgba(255, 255, 255, 0.9);
-            --text-sub: rgba(255, 255, 255, 0.6);
+            --text-sub: rgba(255, 255, 255, 0.5);
             --font-family: 'Inter', system-ui, -apple-system, sans-serif;
         }
 
@@ -30,6 +27,7 @@
             position: relative;
         }
 
+        /* Hiệu ứng chòm sao mờ */
         body::before {
             content: '';
             position: absolute;
@@ -46,10 +44,12 @@
             z-index: 1;
             padding: 50px 60px;
             border-radius: 28px;
-            background: var(--glass-bg);
-            backdrop-filter: blur(25px);
-            border: 1px solid var(--glass-border);
-            box-shadow: 0 15px 50px rgba(0,0,0,0.5);
+            /* Glass trong suốt hoàn toàn */
+            background: rgba(255, 255, 255, 0.02);
+            backdrop-filter: blur(30px);
+            -webkit-backdrop-filter: blur(30px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
             width: 100%;
             max-width: 600px;
             text-align: center;
@@ -59,7 +59,12 @@
 
         h1 { margin-top: 0; font-weight: 400; font-size: 2.8rem; margin-bottom: 25px; color: white; letter-spacing: -1px; }
 
-        input { width: 100%; padding: 18px 25px; border-radius: 14px; border: 1px solid var(--glass-border); background: var(--input-bg); color: white; font-size: 1.1rem; outline: none; box-sizing: border-box; margin-bottom: 30px; }
+        input { 
+            width: 100%; padding: 18px 25px; border-radius: 14px; 
+            border: 1px solid rgba(255, 255, 255, 0.1); 
+            background: rgba(255, 255, 255, 0.03); 
+            color: white; font-size: 1.1rem; outline: none; box-sizing: border-box; margin-bottom: 30px; 
+        }
 
         #history-section { text-align: left; margin-top: 20px; font-size: 1rem; }
         .history-icon { width: 18px; height: 18px; fill: var(--text-sub); margin-right: 15px; }
@@ -67,7 +72,7 @@
         #history-suggestions li { margin-bottom: 12px; display: flex; align-items: center; }
         .history-item-text { color: var(--text-color); text-decoration: none; cursor: pointer; }
 
-        /* Vùng thông tin mới ở góc dưới */
+        /* Vùng thông tin góc dưới */
         #info-footer {
             position: absolute;
             bottom: 30px;
@@ -94,34 +99,27 @@
         </div>
         
         <div id="info-footer">
-            <span id="date">--/--</span> | <span id="weather">---</span>
+            <span id="date">--/--</span> | <span id="weather">TP.HCM: 29°C</span>
             <span id="clock">00:00</span>
         </div>
     </div>
 
     <script>
-        // Cập nhật Greeting
+        // Greeting
         const hour = new Date().getHours();
         document.getElementById('greeting').innerText = hour < 12 ? "Chào buổi sáng." : hour < 19 ? "Chào buổi chiều." : "Chào buổi tối.";
 
-        // Cập nhật Thời gian & Ngày
+        // Thời gian & Ngày
         function updateDateTime() {
             const now = new Date();
             document.getElementById('clock').innerText = now.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' });
             document.getElementById('date').innerText = now.toLocaleDateString('vi-VN', { day: 'numeric', month: 'short' });
         }
         
-        // Cập nhật Thời tiết (Giả lập theo thời gian)
-        function updateWeather() {
-            // Mặc định hiện tại là TP.HCM
-            document.getElementById('weather').innerText = "TP.HCM: 29°C";
-        }
-
         setInterval(updateDateTime, 1000);
         updateDateTime();
-        updateWeather();
 
-        // Lịch sử & Search giữ nguyên logic cũ của bạn
+        // Lịch sử & Search
         const form = document.getElementById('search-form');
         const input = document.getElementById('search-input');
         const historySuggestions = document.getElementById('history-suggestions');
