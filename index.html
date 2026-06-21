@@ -3,12 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <title>New Tab</title>
-    <link rel="icon" href="zen-browser-dark.svg" type="image/svg+xml">
     <style>
         :root {
             --text-color: rgba(255, 255, 255, 0.9);
             --text-sub: rgba(255, 255, 255, 0.5);
-            --font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            --font-family: 'Inter', system-ui, sans-serif;
         }
 
         body {
@@ -17,39 +16,22 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            background: radial-gradient(circle at center, rgba(160, 210, 230, 0.2) 0%, rgba(160, 210, 230, 0) 40%),
-                        radial-gradient(circle at 20% 60%, rgba(120, 50, 180, 0.3) 0%, rgba(120, 50, 180, 0) 50%),
-                        radial-gradient(circle at 80% 40%, rgba(40, 110, 190, 0.3) 0%, rgba(40, 110, 190, 0) 50%), #050810;
-            background-size: cover;
+            /* Nền trong suốt hoàn toàn, không đè màu */
+            background-color: rgba(5, 8, 16, 0.2); 
             font-family: var(--font-family);
             color: var(--text-color);
             overflow: hidden;
-            position: relative;
-        }
-
-        /* Hiệu ứng chòm sao mờ */
-        body::before {
-            content: '';
-            position: absolute;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background-image: radial-gradient(white, rgba(255,255,255,.2) 1px, transparent 2px),
-                              radial-gradient(white, rgba(255,255,255,.1) 1px, transparent 1px);
-            background-size: 200px 200px, 150px 150px;
-            background-position: 0 0, 40px 60px;
-            opacity: 0.1;
-            z-index: 0;
         }
 
         .glass-container {
-            z-index: 1;
             padding: 50px 60px;
             border-radius: 28px;
-            /* Glass trong suốt hoàn toàn */
-            background: rgba(255, 255, 255, 0.02);
-            backdrop-filter: blur(30px);
-            -webkit-backdrop-filter: blur(30px);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+            /* Độ trong suốt cực cao, chỉ giữ lại hiệu ứng blur */
+            background: rgba(255, 255, 255, 0.01); 
+            backdrop-filter: blur(40px);
+            -webkit-backdrop-filter: blur(40px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
             width: 100%;
             max-width: 600px;
             text-align: center;
@@ -57,12 +39,12 @@
             box-sizing: border-box;
         }
 
-        h1 { margin-top: 0; font-weight: 400; font-size: 2.8rem; margin-bottom: 25px; color: white; letter-spacing: -1px; }
+        h1 { margin-top: 0; font-weight: 400; font-size: 2.8rem; margin-bottom: 25px; color: white; }
 
         input { 
             width: 100%; padding: 18px 25px; border-radius: 14px; 
             border: 1px solid rgba(255, 255, 255, 0.1); 
-            background: rgba(255, 255, 255, 0.03); 
+            background: rgba(255, 255, 255, 0.02); 
             color: white; font-size: 1.1rem; outline: none; box-sizing: border-box; margin-bottom: 30px; 
         }
 
@@ -72,7 +54,6 @@
         #history-suggestions li { margin-bottom: 12px; display: flex; align-items: center; }
         .history-item-text { color: var(--text-color); text-decoration: none; cursor: pointer; }
 
-        /* Vùng thông tin góc dưới */
         #info-footer {
             position: absolute;
             bottom: 30px;
@@ -115,7 +96,6 @@
             document.getElementById('clock').innerText = now.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' });
             document.getElementById('date').innerText = now.toLocaleDateString('vi-VN', { day: 'numeric', month: 'short' });
         }
-        
         setInterval(updateDateTime, 1000);
         updateDateTime();
 
