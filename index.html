@@ -7,7 +7,6 @@
         :root {
             --text-color: rgba(255, 255, 255, 0.9);
             --text-sub: rgba(255, 255, 255, 0.5);
-            --font-family: 'Inter', system-ui, sans-serif;
         }
 
         body {
@@ -16,9 +15,9 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            /* ĐÃ XÓA MÀU TÍM: Nền hoàn toàn trong suốt hoặc tối nhẹ */
-            background: #050810; 
-            font-family: var(--font-family);
+            /* NỀN TRONG SUỐT HOÀN TOÀN - ĐÃ XÓA MỌI GRADIENT TÍM */
+            background-color: #050810; 
+            font-family: 'Inter', system-ui, sans-serif;
             color: var(--text-color);
             overflow: hidden;
         }
@@ -70,15 +69,12 @@
 
     <div class="glass-container">
         <h1 id="greeting">...</h1>
-        
         <form id="search-form">
             <input type="text" name="q" id="search-input" placeholder="..." autofocus>
         </form>
-        
         <div id="history-section">
             <ul id="history-suggestions"></ul>
         </div>
-        
         <div id="info-footer">
             <span id="date">--/--</span> | <span id="weather">TP.HCM: 29°C</span>
             <span id="clock">00:00</span>
