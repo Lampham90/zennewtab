@@ -23,10 +23,15 @@
             align-items: center;
             
             /* --- SỬA CHÍNH: NỀN VŨ TRỤ --- */
+            /* Tạo hiệu ứng mây vũ trụ sâu thẳm bằng radial-gradient nhiều lớp */
             background: 
+                /* Lớp sáng ngọc trai trung tâm */
                 radial-gradient(circle at center, rgba(160, 210, 230, 0.2) 0%, rgba(160, 210, 230, 0) 40%),
+                /* Lớp mây tím amethyst ở phía trái */
                 radial-gradient(circle at 20% 60%, rgba(120, 50, 180, 0.3) 0%, rgba(120, 50, 180, 0) 50%),
+                /* Lớp mây xanh indigo ở phía phải */
                 radial-gradient(circle at 80% 40%, rgba(40, 110, 190, 0.3) 0%, rgba(40, 110, 190, 0) 50%),
+                /* Nền tối sâu thẳm */
                 #050810;
             background-size: cover;
             
@@ -36,33 +41,39 @@
             position: relative;
         }
 
+        /* Thêm hiệu ứng chòm sao mờ bằng giả phần tử */
         body::before {
             content: '';
             position: absolute;
             top: 0; left: 0; right: 0; bottom: 0;
+            /* Tạo một vài điểm constellation mờ mờ */
             background-image: 
                 radial-gradient(white, rgba(255,255,255,.2) 1px, transparent 2px),
                 radial-gradient(white, rgba(255,255,255,.1) 1px, transparent 1px);
             background-size: 200px 200px, 150px 150px;
             background-position: 0 0, 40px 60px;
-            opacity: 0.1;
+            opacity: 0.1; /* Rất mờ */
             z-index: 0;
         }
 
         .glass-container {
-            z-index: 1;
-            padding: 50px 60px;
-            border-radius: 28px;
+            z-index: 1; /* Nằm trên lớp constellation */
+            padding: 50px 60px; /* Tăng padding để panel rộng hơn y hình */
+            border-radius: 28px; /* Bo góc mềm mại hơn */
             background: var(--glass-bg);
-            backdrop-filter: blur(25px);
+            /* Hiệu ứng kính mờ (Glassmorphism) */
+            backdrop-filter: blur(25px); /* Tăng độ mờ */
             -webkit-backdrop-filter: blur(25px);
             border: 1px solid var(--glass-border);
+            /* Đổ bóng sâu hơn cho cảm giác "phù du" */
             box-shadow: 0 15px 50px rgba(0,0,0,0.5);
             width: 100%;
-            max-width: 600px;
+            max-width: 600px; /* Panel rộng hơn một chút */
             text-align: center;
-            animation: fadeIn 1s ease-out;
+            animation: fadeIn 1s ease-out; /* Animation mượt hơn */
             position: relative;
+            
+            /* Tắt hiệu ứng co giãn box mặc định */
             box-sizing: border-box;
         }
 
@@ -71,317 +82,190 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
-        h1 { margin-top: 0; font-weight: 400; font-size: 2.8rem; margin-bottom: 25px; color: white; letter-spacing: -1px; }
+        h1 { 
+            margin-top: 0; 
+            font-weight: 400; /* Font dày hơn một chút */
+            font-size: 2.8rem; /* Chữ greeting lớn hơn */
+            margin-bottom: 25px;
+            color: white;
+            letter-spacing: -1px; /* Khoảng cách chữ khít hơn */
+        }
 
-        #search-form { margin-bottom: 30px; }
+        #search-form {
+            margin-bottom: 30px;
+        }
 
         input {
-            width: 100%; padding: 18px 25px; border-radius: 14px;
+            width: 100%;
+            padding: 18px 25px; /* Padding ô tìm kiếm */
+            border-radius: 14px; /* Bo góc ô input */
             border: 1px solid var(--glass-border);
-            background: var(--input-bg);
-            color: white; font-size: 1.1rem; outline: none; box-sizing: border-box; transition: all 0.3s ease;
+            background: var(--input-bg); /* Nền input tối hơn, mờ */
+            color: white;
+            font-size: 1.1rem;
+            outline: none;
+            box-sizing: border-box;
+            transition: all 0.3s ease;
         }
 
-        input:focus { background: rgba(255,255,255,0.15); border-color: rgba(255,255,255,0.4); box-shadow: 0 0 15px rgba(255,255,255,0.1); }
+        input:focus { 
+            background: rgba(255,255,255,0.15); 
+            border-color: rgba(255,255,255,0.4); 
+            box-shadow: 0 0 15px rgba(255,255,255,0.1);
+        }
 
-        #history-section { text-align: left; margin-top: 20px; font-size: 1rem; }
-        #history-title { color: var(--text-sub); margin-bottom: 15px; display: block; font-weight: 500; }
-        #history-suggestions { list-style: none; padding: 0; margin: 0; }
-        #history-suggestions li { margin-bottom: 12px; display: flex; align-items: center; }
-        .history-icon { width: 18px; height: 18px; fill: var(--text-sub); margin-right: 15px; }
-        .history-item-text { color: var(--text-color); text-decoration: none; cursor: pointer; transition: color 0.2s ease; }
-        .history-item-text:hover { color: white; }
+        /* --- PHẦN LỊCH SỬ --- */
+        #history-section {
+            text-align: left; /* Căn trái toàn bộ phần lịch sử */
+            margin-top: 20px;
+            font-size: 1rem;
+        }
 
-        /* Vùng hiển thị Ngày, Giờ, Thời tiết */
-        #info-footer {
-            position: absolute;
-            bottom: 30px;
-            right: 40px;
-            text-align: right;
+        #history-title {
+            color: var(--text-sub);
+            margin-bottom: 15px;
+            display: block;
+            font-weight: 500;
+        }
+
+        #history-suggestions {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        #history-suggestions li {
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+        }
+
+        /* Biểu tượng "search history" SVG */
+        .history-icon {
+            width: 18px;
+            height: 18px;
+            fill: var(--text-sub);
+            margin-right: 15px;
+        }
+
+        .history-item-text {
             color: var(--text-color);
+            text-decoration: none;
+            cursor: pointer;
+            transition: color 0.2s ease;
+        }
+
+        .history-item-text:hover {
+            color: white;
+        }
+
+        /* --- ĐỒNG HỒ & NGÀY TẠI VỊ TRÍ MỚI --- */
+        #clock-container {
+            position: absolute;
+            bottom: 30px; 
+            right: 40px; 
+            text-align: right;
+            color: white;
         }
         #clock { font-size: 1.6rem; font-weight: 300; letter-spacing: 1px; opacity: 0.9; }
-        #date-weather { font-size: 1rem; color: var(--text-sub); margin-top: 5px; }
+        #date { font-size: 1rem; color: var(--text-sub); display: block; }
     </style>
 </head>
 <body>
 
     <div class="glass-container">
         <h1 id="greeting">...</h1>
+        
         <form id="search-form">
             <input type="text" name="q" id="search-input" placeholder="..." autofocus>
         </form>
+        
         <div id="history-section">
             <span id="history-title">Tìm kiếm history</span>
             <ul id="history-suggestions"></ul>
         </div>
-    </div>
-
-    <div id="info-footer">
-        <div id="clock">00:00</div>
-        <div id="date-weather"><span id="date">--/--</span> | <span id="weather">--°C</span></div>
+        
+        <div id="clock-container">
+            <div id="clock">00:00</div>
+            <div id="date">--/--</div>
+        </div>
     </div>
 
     <script>
-         // Diccionario de traducciones
-
-
-
+         // Từ điển dịch thuật
         const i18n = {
-
-
-
             'af': { greeting: ["Goeie môre.", "Goeie middag.", "Goeie aand."], placeholder: "Soek of voer URL in..." },
-
-
-
             'ar': { greeting: ["صباح الخير.", "مساء الخير.", "مساء النور."], placeholder: "ابحث أو أدخل رابطاً..." },
-
-
-
             'az': { greeting: ["Sabahınız xeyir.", "Gün ortanız xeyir.", "Axşamınız xeyir."], placeholder: "URL-ni axtarın və ya daxil edin..." },
-
-
-
             'bg': { greeting: ["Добро утро.", "Добър ден.", "Добър вечер."], placeholder: "Търсене или въвеждане на URL..." },
-
-
-
-            'bn': { greeting: ["শুভ সকাল।", "শুভ দুপুর۔", "শুভ সন্ধ্যা।"], placeholder: "ইউআরএল (URL) খুঁজুন বা লিখুন..." },
-
-
-
+            'bn': { greeting: ["শুভ সকাল।", "শুভ দুপুর।", "শুভ সন্ধ্যা।"], placeholder: "ইউআরএল (URL) খুঁজুন বা লিখুন..." },
             'bs': { greeting: ["Dobro jutro.", "Dobar dan.", "Dobro veče."], placeholder: "Pretražite ili unesite URL..." },
-
-
-
             'ca': { greeting: ["Bon dia.", "Bona tarda.", "Bona nit."], placeholder: "Buscar o escriure un URL..." },
-
-
-
             'cs': { greeting: ["Dobré ráno.", "Dobré odpoledne.", "Dobrý večer."], placeholder: "Hledat nebo zadat URL..." },
-
-
-
             'cy': { greeting: ["Bore da.", "Prynhawn da.", "Nos da."], placeholder: "Chwilio neu nodi URL..." },
-
-
-
             'da': { greeting: ["Godmorgen.", "God eftermiddag.", "God aften."], placeholder: "Søg eller indtast URL..." },
-
-
-
             'de': { greeting: ["Guten Morgen.", "Guten Tag.", "Guten Abend."], placeholder: "Suchen oder URL eingeben..." },
-
-
-
             'el': { greeting: ["Καλημέρα.", "Καλό απόγευμα.", "Καλησπέρα."], placeholder: "Αναζήτηση ή εισαγωγή URL..." },
-
-
-
             'en': { greeting: ["Good morning.", "Good afternoon.", "Good evening."], placeholder: "Search or enter URL..." },
-
-
-
             'es': { greeting: ["Buenos días.", "Buenas tardes.", "Buenas noches."], placeholder: "Buscar o escribir URL..." },
-
-
-
             'et': { greeting: ["Tere hommikust.", "Tere päevast.", "Tere õhtust."], placeholder: "Otsige või sisestage URL..." },
-
-
-
             'eu': { greeting: ["Egun on.", "Arratsalde on.", "Gabon."], placeholder: "Bilatu edo idatzi URLa..." },
-
-
-
             'fa': { greeting: ["صبح بخیر.", "بعد از ظهر بخیر.", "عصر بخیر."], placeholder: "جستجو یا ورود URL..." },
-
-
-
             'fi': { greeting: ["Hyvää huomenta.", "Hyvää iltapäivää.", "Hyvää iltaa."], placeholder: "Hae tai kirjoita URL..." },
-
-
-
             'fr': { greeting: ["Bonjour.", "Bon après-midi.", "Bonsoir."], placeholder: "Rechercher ou entrer une URL..." },
-
-
-
             'ga': { greeting: ["Maidin mhaith.", "Tráthnóna maith.", "Oíche mhaith."], placeholder: "Cuardaigh nó cuir isteach URL..." },
-
-
-
             'gl': { greeting: ["Bos días.", "Boa tarde.", "Boa noite."], placeholder: "Buscar ou escribir URL..." },
-
-
-
             'gu': { greeting: ["સુભ સવાર.", "શુભ બપોર.", "શુભ સાંજ."], placeholder: "શોધો અથવા URL દાખલ કરો..." },
-
-
-
             'he': { greeting: ["בוקר טוב.", "צהריים טובים.", "ערב טוב."], placeholder: "חפש או הזן כתובת אתר..." },
-
-
-
             'hi': { greeting: ["सुप्रभात।", "शुभ दोपहर।", "शुभ संध्या।"], placeholder: "खोजें या URL दर्ज करें..." },
-
-
-
             'hr': { greeting: ["Dobro jutro.", "Dobar dan.", "Dobra večer."], placeholder: "Pretraži ili unesi URL..." },
-
-
-
             'hu': { greeting: ["Jó reggelt.", "Jó napot.", "Jó estét."], placeholder: "Keresés vagy URL megadása..." },
-
-
-
             'hy': { greeting: ["Բարի լույս.", "Բարի օր.", "Բարի երեկո."], placeholder: "Փնտրեք կամ մուտքագրեք URL..." },
-
-
-
             'id': { greeting: ["Selamat pagi.", "Selamat siang.", "Selamat malam."], placeholder: "Cari atau masukkan URL..." },
-
-
-
             'is': { greeting: ["Góðan daginn.", "Góðan daginn.", "Gott kvöld."], placeholder: "Leitaðu eða sláðu inn vefslóð..." },
-
-
-
             'it': { greeting: ["Buongiorno.", "Buon pomeriggio.", "Buonasera."], placeholder: "Cerca o inserisci URL..." },
-
-
-
             'ja': { greeting: ["おはようございます。", "こんにちは。", "こんばんは。"], placeholder: "検索またはURLを入力..." },
-
-
-
-            'ka': { greeting: ["დილა მშვიდობისა.", "შუადღე მშვიდობისა.", "ਸაღამო მშვიდობისა."], placeholder: "მოძებნეთ ან შეიყვანეთ URL..." },
-
-
-
+            'ka': { greeting: ["დილა მშვიდობისა.", "შუადღე მშვიდობისა.", "საღამო მშვიდობისა."], placeholder: "მოძებნეთ ან შეიყვანეთ URL..." },
             'kk': { greeting: ["Қайырлы таң.", "Қайырлы күн.", "Қайырлы кеш."], placeholder: "URL мекенжайын іздеңіз немесе енгізіңіз..." },
-
-
-
             'ko': { greeting: ["좋은 아침입니다.", "좋은 오후입니다.", "좋은 저녁입니다."], placeholder: "검색 또는 URL 입력..." },
-
-
-
             'lt': { greeting: ["Labas rytas.", "Laba diena.", "Labas vakaras."], placeholder: "Ieškoti arba įvesti URL..." },
-
-
-
             'lv': { greeting: ["Labrīt.", "Labdien.", "Labvakar."], placeholder: "Meklēt vai ievadīt URL..." },
-
-
-
             'mk': { greeting: ["Добро утро.", "Добар ден.", "Добро вечер."], placeholder: "Пребарајте или внесете URL..." },
-
-
-
             'ml': { greeting: ["സുപ്രഭാതം.", "ഉച്ചതിരിഞ്ഞ് ആശംസകൾ.", "శుభसंध്യ।"], placeholder: "URL തിരയുക അല്ലെങ്കിൽ നൽകുക..." },
-
-
-
             'mr': { greeting: ["सुप्रभात.", "शुभ दुपार.", "शुभ संध्याकाळ."], placeholder: "शोधा किंवा URL प्रविष्ट करा..." },
-
-
-
             'ms': { greeting: ["Selamat pagi.", "Selamat petang.", "Selamat malam."], placeholder: "Cari atau masukkan URL..." },
-
-
-
             'nl': { greeting: ["Goedemorgen.", "Goedemiddag.", "Goedenavond."], placeholder: "Zoeken of URL invoeren..." },
-
-
-
             'no': { greeting: ["God morgen.", "God ettermiddag.", "God kveld."], placeholder: "Søk eller skriv inn URL..." },
-
-
-
             'pl': { greeting: ["Dzień dobry.", "Dzień dobry.", "Dobry wieczór."], placeholder: "Szukaj lub wpisz URL..." },
-
-
-
             'pt': { greeting: ["Bom dia.", "Boa tarde.", "Boa noite."], placeholder: "Pesquisar ou inserir URL..." },
-
-
-
             'ro': { greeting: ["Bună dimineața.", "Bună ziua.", "Bună seara."], placeholder: "Căutați sau introduceți adresa URL..." },
-
-
-
             'ru': { greeting: ["Доброе утро.", "Добрый день.", "Добрый вечер."], placeholder: "Поиск или URL..." },
-
-
-
             'sk': { greeting: ["Dobré ráno.", "Dobrý deň.", "Dobrý večer."], placeholder: "Hľadať alebo zadať URL..." },
-
-
-
             'sl': { greeting: ["Dobro jutro.", "Dober dan.", "Dober večer."], placeholder: "Iskanje ali vnos URL-ja..." },
-
-
-
             'sq': { greeting: ["Mirëmengjes.", "Mirëdita.", "Mirëbrëma."], placeholder: "Kërko ose fut URL-në..." },
-
-
-
             'sr': { greeting: ["Добро јутро.", "Добар дан.", "Добро вече."], placeholder: "Претражите или унесите УРЛ..." },
-
-
-
             'sv': { greeting: ["God morgon.", "God dag.", "God kväll."], placeholder: "Sök eller ange URL..." },
-
-
-
             'sw': { greeting: ["Habari za asubuhi.", "Habari za mchana.", "Habari za jioni."], placeholder: "Tafuta au weka URL..." },
-
-
-
             'ta': { greeting: ["காலை வணக்கம்.", "மதிய வணக்கம்.", "மாலை வணக்கம்."], placeholder: "URL-ஐத் தேடவும் அல்லது உள்ளிடவும்..." },
-
-
-
             'te': { greeting: ["శుభోదయం.", "మధ్యాహ్న శుభాకాంక్షలు.", "శుభ సాయంత్రం."], placeholder: "URLని శోధించండి లేదా నమోదు చేయండి..." },
-
-
-
             'th': { greeting: ["สวัสดีตอนเช้า", "สวัสดีตอนบ่าย", "สวัสดีตอนเย็น"], placeholder: "ค้นหาหรือป้อน URL..." },
-
-
-
             'tl': { greeting: ["Magandang umaga.", "Magandang hapon.", "Magandang gabi."], placeholder: "Maghanap o maglagay ng URL..." },
-
-
-
             'tr': { greeting: ["Günaydın.", "İyi günler.", "İyi akşamlar."], placeholder: "Ara veya URL gir..." },
-
-
-
             'uk': { greeting: ["Доброго ранку.", "Доброго дня.", "Доброго вечора."], placeholder: "Пошук або введення URL-адреси..." },
-
-
-
             'vi': { greeting: ["Chào buổi sáng.", "Chào buổi chiều.", "Chào buổi tối."], placeholder: "Tìm kiếm hoặc nhập URL..." },
-
-
-
             'zh': { greeting: ["早上好。", "下午好。", "晚上好。"], placeholder: "搜索或输入网址..." }
-
-
-
         };
 
         const lang = navigator.language.split('-')[0];
-        const t = i18n[lang] || i18n['vi'];
-        const hour = new Date().getHours();
-        document.getElementById('greeting').innerText = t.greeting[hour < 12 ? 0 : hour < 19 ? 1 : 2];
-        document.getElementById('search-input').placeholder = t.placeholder;
-
+        const t = i18n[lang] || i18n['vi']; 
         const historyIconSVG = `<svg class="history-icon" viewBox="0 0 24 24"><path d="M13 3a9 9 0 0 0-9 9H1l3.89 3.89.07.14L9 12H6a7 7 0 1 1 7 7 7 7 0 0 1-7-7H4a9 9 0 1 0 9-9Z"/></svg>`;
 
-        // Cập nhật Thời gian & Thời tiết
+        const hour = new Date().getHours();
+        const greetingIndex = hour < 12 ? 0 : hour < 19 ? 1 : 2;
+        document.getElementById('greeting').innerText = t.greeting[greetingIndex];
+        document.getElementById('search-input').placeholder = t.placeholder;
+
+        // Cập nhật Đồng hồ & Ngày
         function updateDateTime() {
             const now = new Date();
             document.getElementById('clock').innerText = now.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit', hour12: false });
@@ -390,27 +274,16 @@
         setInterval(updateDateTime, 1000);
         updateDateTime();
 
-        async function updateWeather() {
-            // Thay 'YOUR_API_KEY' bằng key thật của bạn
-            const API_KEY = 'YOUR_API_KEY'; 
-            if (navigator.geolocation) {
-                navigator.geolocation.getCurrentPosition(async (pos) => {
-                    const url = `https://api.openweathermap.org/data/2.5/weather?lat=${pos.coords.latitude}&lon=${pos.coords.longitude}&units=metric&appid=${API_KEY}`;
-                    try { const res = await fetch(url); const data = await res.json(); document.getElementById('weather').innerText = Math.round(data.main.temp) + '°C'; } catch(e) {}
-                });
-            }
-        }
-        updateWeather();
-
-        // Giữ nguyên logic Lịch sử và Form gốc
+        // Logic Lịch sử & Search (Giữ nguyên)
         const form = document.getElementById('search-form');
         const input = document.getElementById('search-input');
         const historySuggestions = document.getElementById('history-suggestions');
         const getHistory = () => JSON.parse(localStorage.getItem('zen_history') || '[]');
         
         function updateHistoryList() {
+            const history = getHistory().slice(0, 3);
             historySuggestions.innerHTML = '';
-            getHistory().slice(0, 3).forEach(query => {
+            history.forEach(query => {
                 const li = document.createElement('li');
                 li.innerHTML = `${historyIconSVG}<a class="history-item-text">${query}</a>`;
                 li.querySelector('.history-item-text').addEventListener('click', () => { input.value = query; form.requestSubmit(); });
@@ -431,8 +304,10 @@
             window.location.href = ((query.includes('.') && !query.includes(' ')) || query.startsWith('http')) ? (query.startsWith('http') ? query : 'https://' + query) : `https://www.google.com/search?q=${encodeURIComponent(query)}`;
         });
 
-        document.addEventListener('click', () => input.focus());
-        document.addEventListener('keydown', () => input.focus());
+        const focusInput = document.getElementById('search-input');
+        window.addEventListener('focus', () => focusInput.focus());
+        document.addEventListener('click', () => focusInput.focus());
+        document.addEventListener('keydown', () => focusInput.focus());
     </script>
 </body>
 </html>
